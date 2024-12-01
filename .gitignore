@@ -44,3 +44,6 @@ app.*.map.json
 
 production.env
 development.env
+
+*.freezed.dart
+*.g.dart

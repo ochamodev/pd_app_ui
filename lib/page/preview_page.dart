@@ -3,14 +3,24 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:recycling_pal/page/classification_page.dart';
+import 'package:recycling_pal/state/app_notifier.dart';
+import 'package:recycling_pal/state/app_state.dart';
 
-class PreviewPage extends StatelessWidget {
+class PreviewPage extends ConsumerStatefulWidget {
   const PreviewPage({super.key, required this.picture});
 
   final XFile picture;
 
   @override
+  ConsumerState<PreviewPage> createState() => _PreviewPageState();
+}
+
+class _PreviewPageState extends ConsumerState<PreviewPage> {
+  @override
   Widget build(BuildContext context) {
+    final AppNotifier notifier = ref.read(appNotifierProvider.notifier);
     return Scaffold(
       appBar: AppBar(title: const Text('Vista previa')),
       body: SizedBox(
@@ -18,11 +28,18 @@ class PreviewPage extends StatelessWidget {
           child: Column(
               children: [
                 Center(
-                  child: Image.file(File(picture.path), fit: BoxFit.fill, width: MediaQuery.sizeOf(context).width * 0.70),
+                  child: Image.file(File(widget.picture.path), fit: BoxFit.fill, width: MediaQuery.sizeOf(context).width * 0.70),
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    await notifier.classifyImage(widget.picture.path,
+                        widget.picture.name);
+                    Navigator.push(context,
+                      MaterialPageRoute(builder: (_) {
+                        return ClassificationPage(picture: widget.picture);
+                      })
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).primaryColor
