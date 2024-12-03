@@ -52,7 +52,7 @@ jobs:
 
       #6 Building APK
       - name: Build APK
-        run: flutter build apk --release
+        run: flutter build apk --dart-define=API_URL=${{ secrets.API_URL }}--release
 
         #7 Building App Bundle (aab)
       - name: Build appBundle
