@@ -23,7 +23,7 @@ Future<ClassificationResponse?> uploadImage(String imgPath, String fileName) asy
 
   } on Exception catch (e) {
     print(e);
-    return null;
+    return ClassificationResponse(typeOfMaterial: "Error", classification: e.toString());
   }
 
 }
