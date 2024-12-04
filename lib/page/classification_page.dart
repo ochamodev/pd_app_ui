@@ -26,15 +26,27 @@ class ClassificationPageState extends ConsumerState<ClassificationPage> {
         title: Text("Clasificación"),
       ),
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: Center(
           child: Column(
             children: [
               Center(
-                child: Image.file(File(widget.picture.path), fit: BoxFit.fill, width: MediaQuery.sizeOf(context).width * 0.70),
+                child: Image.file(File(widget.picture.path), fit: BoxFit.fill, width: MediaQuery.sizeOf(context).width * 0.65),
               ),
               const SizedBox(height: 24),
-              Text("Clasificación: ${state.classification}"),
-              Text("Tipo de material: ${state.materialType}")
+              Text(
+                style: Theme.of(context).textTheme.headlineSmall,
+                "Resultado hugging face"
+              ),
+              Text("Clasificación: ${state.huggingFaceMaterial}"),
+              const SizedBox(height: 24,),
+              Text(
+                  style: Theme.of(context).textTheme.headlineSmall,
+                  "Resultado nuestro modelo"
+              ),
+              Text("Clasificación: ${state.pytorchClassification}"),
+              Text("Material: ${state.pytorchMaterial}"),
+              const SizedBox(height: 24,),
             ],
           ),
         ),

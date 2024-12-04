@@ -43,9 +43,7 @@ class MyApp extends StatelessWidget {
           onErrorContainer: Color(0xFFB71C1C),
         ),
       ),
-      home: const SafeArea(
-          child: MainMenu()
-      ),
+      home: MainMenu(),
     );
   }
 }

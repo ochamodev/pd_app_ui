@@ -5,23 +5,33 @@ import 'package:recycling_pal/state/app_state.dart';
 
 class AppNotifier extends StateNotifier<AppState> {
 
-  AppNotifier() : super(AppState(materialType: '', classification: ''));
+  AppNotifier() : super(AppState(huggingFaceMaterial: '', pytorchClassification: '', pytorchMaterial: '', loading: false));
 
   Future<void> classifyImage(String imgPath, String fileName) async {
     final response = await uploadImage(imgPath, fileName);
 
     if (response != null) {
       final AppState appState = AppState(
-          materialType: response.typeOfMaterial,
-          classification: response.classification
+        huggingFaceMaterial: response.huggingFaceResponse.typeOfMaterial,
+        pytorchClassification: response.pytorchModel.classification,
+        pytorchMaterial: response.pytorchModel.typeOfMaterial,
+        loading: false
       );
       state =  appState;
     } else {
-      state = AppState(
-          materialType: '',
-          classification: ''
+      state = const AppState(
+        pytorchMaterial: 'Error no se pudo ejecutar la operación',
+        pytorchClassification: '',
+        huggingFaceMaterial: '',
+        loading: false
       );
     }
+  }
+
+  setLoading(bool loading) {
+    state = state.copyWith(
+      loading: loading
+    );
   }
 
 }

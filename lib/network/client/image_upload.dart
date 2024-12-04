@@ -1,10 +1,12 @@
 
 import 'package:dio/dio.dart';
 import 'package:recycling_pal/network/response/classification_response.dart';
+import 'package:recycling_pal/network/response/hugging_face_response.dart';
+import 'package:recycling_pal/network/response/server_response.dart';
 import 'package:recycling_pal/shared/endpoints.dart';
 import 'package:recycling_pal/shared/environment.dart';
 
-Future<ClassificationResponse?> uploadImage(String imgPath, String fileName) async {
+Future<ServerResponse?> uploadImage(String imgPath, String fileName) async {
   try {
     final Dio dio = Dio();
     const url = "${Environment.restApiUrl}${Endpoints.imageClassification}";
@@ -17,13 +19,13 @@ Future<ClassificationResponse?> uploadImage(String imgPath, String fileName) asy
         url,
         data: formData
     );
-    var classificationResponse = ClassificationResponse.fromJson(response.data);
+    var serverResponse = ServerResponse.fromJson(response.data);
 
-    return classificationResponse;
+    return serverResponse;
 
   } on Exception catch (e) {
     print(e);
-    return ClassificationResponse(typeOfMaterial: "Error", classification: e.toString());
+    return ServerResponse(pytorchModel: ClassificationResponse(typeOfMaterial: "", classification: e.toString()), huggingFaceResponse: HuggingFaceResponse(typeOfMaterial: ""));
   }
 
 }

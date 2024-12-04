@@ -21,6 +21,7 @@ class _PreviewPageState extends ConsumerState<PreviewPage> {
   @override
   Widget build(BuildContext context) {
     final AppNotifier notifier = ref.read(appNotifierProvider.notifier);
+    final state = ref.watch(appNotifierProvider);
     return Scaffold(
       appBar: AppBar(title: const Text('Vista previa')),
       body: SizedBox(
@@ -32,19 +33,26 @@ class _PreviewPageState extends ConsumerState<PreviewPage> {
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
-                  onPressed: () async {
+                  onPressed: state.loading ? null : () async {
+                    notifier.setLoading(true);
                     await notifier.classifyImage(widget.picture.path,
                         widget.picture.name);
                     Navigator.push(context,
-                      MaterialPageRoute(builder: (_) {
-                        return ClassificationPage(picture: widget.picture);
-                      })
+                        MaterialPageRoute(builder: (_) {
+                          return ClassificationPage(picture: widget.picture);
+                        })
                     );
                   },
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).primaryColor
                   ),
-                  child: Text(
+                  child: state.loading ? SizedBox(
+                    height: 24,
+                    width: 24,
+                    child: CircularProgressIndicator(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ) : Text(
                     "Clasificar",
                     style: TextStyle(
                         color: Theme.of(context).colorScheme.onPrimary

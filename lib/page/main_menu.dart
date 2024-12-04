@@ -12,7 +12,7 @@ class MainMenu extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Bienvenido a Recycler Pal"),
+        title: Text("Bienvenido a RecycAI"),
       ),
       body: _MainMenuBody(),
     );
